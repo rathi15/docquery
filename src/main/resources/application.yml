@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: docquery
+
+  datasource:
+    url: jdbc:postgresql://localhost:5433/docquery
+    username: docquery
+    password: localdev
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+
+  flyway:
+    enabled: true
