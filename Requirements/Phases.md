@@ -4,27 +4,29 @@ Work strictly one phase at a time. A phase is done only when its acceptance crit
 pass. Tick boxes as you go; mirror progress in Memory.md.
 
 ## Phase 0 — Environment  (Week 1, Day 1)
-- [ ] VS Code + Extension Pack for Java + Spring Boot Extension Pack installed
-- [ ] JDK 17 available (`java -version`), Git configured, GitHub account ready
+- [x] VS Code + Extension Pack for Java + Spring Boot Extension Pack installed
+- [x] JDK 17 available (`java -version`), Git configured, GitHub account ready
 
 ## Phase 1 — Skeleton + CI  (Week 1, Day 1)
-- [ ] Generate from start.spring.io: Maven, Java 17, Boot 3.x; deps: Web, Security,
+- [x] Generate from start.spring.io: Maven, Java 17, Boot 3.x; deps: Web, Security,
       Validation, Actuator, Lombok (NO JPA/Flyway/Spring AI yet — see Rules #3)
-- [ ] `./mvnw spring-boot:run` shows Spring Security's default login page
-- [ ] `./mvnw test` green (contextLoads)
-- [ ] Repo `docquery` on GitHub, code pushed
-- [ ] `.github/workflows/ci.yml` — checkout, temurin 17 + maven cache, `./mvnw -B verify`
-- [ ] README stub with CI badge
-- **Acceptance**: green run visible in the GitHub Actions tab.
+- [x] `./mvnw spring-boot:run` shows Spring Security's default login page
+- [x] `./mvnw test` green (contextLoads)
+- [x] Repo `docquery` on GitHub, code pushed
+- [x] `.github/workflows/ci.yml` — checkout, temurin 17 + maven cache, `./mvnw -B verify`
+- [x] README stub with CI badge
+- **Acceptance**: green run visible in the GitHub Actions tab. ✅ DONE
 
 ## Phase 2 — Database  (Week 1, Day 2)
-- [ ] `docker-compose.yml`: service `db` from `pgvector/pgvector:pg16`, volume, env vars
-- [ ] Add deps: Spring Data JPA, PostgreSQL driver, Flyway
-- [ ] `V1__init.sql`: CREATE EXTENSION vector; `users`; `documents` (per Architecture.md)
-- [ ] `application.yml` datasource via env vars with local defaults
+- [x] `docker-compose.yml`: service `db` from `pgvector/pgvector:pg16`, volume, env vars
+      (note: host port 5433 — old local Postgres occupied 5432)
+- [x] Add deps: Spring Data JPA, PostgreSQL driver, Flyway
+- [x] `V1__init.sql`: CREATE EXTENSION vector; `users`; `documents`
+- [x] `application.yml` datasource via env vars, ddl-auto: validate
+- [x] CI updated with pgvector service + health check so contextLoads passes on runner
 - **Acceptance**: app starts against the container; Flyway log shows V1 applied;
-  tables visible via `psql`.
-
+  tables visible via `psql`. ✅ DONE
+  
 ## Phase 3 — Auth  (Week 1, Day 3)
 - [ ] `User` entity + repository; BCrypt password encoding
 - [ ] POST /auth/register → 201; POST /auth/login → 200 with JWT

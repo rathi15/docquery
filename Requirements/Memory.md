@@ -64,3 +64,32 @@
   3-week phase plan); Day 1 task list issued for VS Code; these six docs created.
 - Next step: finish Phase 1 → confirm green CI badge, then start Phase 2
   (docker-compose.yml + JPA/Flyway deps + V1 migration).
+  ### 2026-07-19
+- Done: skeleton generated, ran locally, tests green, pushed to GitHub, CI green.
+- Blockers: mvnw path confusion (terminal was in wrong folder) — solved.
+- Next step: Phase 2 — docker-compose with pgvector + V1 migration.
+### 2026-07-19 — Phase 2 complete (Database)
+- Done:
+  - docker-compose.yml with pgvector/pgvector:pg16, named volume db-data, port 5433:5432.
+  - Added deps: spring-boot-starter-data-jpa, postgresql (runtime), flyway-core,
+    flyway-database-postgresql.
+  - application.yml: datasource → localhost:5433, ddl-auto: validate, flyway enabled.
+    (Deleted application.properties — one config format only.)
+  - V1__init.sql: CREATE EXTENSION vector; users + documents tables. Applied by Flyway
+    on startup ("Successfully applied 1 migration"); verified 3 tables via psql \dt.
+  - ci.yml: added services: db (pgvector) with health check, port 5433 — so contextLoads
+    (which now needs a DB) passes on GitHub's runner. CI green.
+- Bugs + lessons (keep — interview material):
+  - Bug 1: "password authentication failed" — an old local Windows PostgreSQL was
+    squatting on port 5432, answering before our container. Fix: moved our container to
+    host port 5433. Lesson: auth-failed ≠ connection-refused; first ask "who is actually
+    answering on this port?" (Get-Service *postgres*, netstat -ano | findstr :5432).
+  - Bug 2: "relation users does not exist" — migration file was in the wrong folder, so
+    Flyway silently found nothing and the app started anyway. Lesson: "app started" ≠
+    "step worked" — always confirm the evidence line. Convention-based tools (Flyway's
+    db/migration, GitHub's .github/workflows) never error on a wrong path, they ignore you.
+- Note: local tests now require Docker running (accepted trade-off; Testcontainers in
+  Phase 7 removes this).
+- Next step: Phase 3 — Auth. User entity + repository, BCrypt password hashing,
+  register/login endpoints, JwtService + JwtAuthFilter, stateless SecurityConfig
+  (/auth/** and /actuator/health public, everything else authenticated).
