@@ -93,3 +93,27 @@
 - Next step: Phase 3 — Auth. User entity + repository, BCrypt password hashing,
   register/login endpoints, JwtService + JwtAuthFilter, stateless SecurityConfig
   (/auth/** and /actuator/health public, everything else authenticated).
+
+  ### 2026-07-23 — Phase 3 complete (Auth)
+- Done:
+  - User entity + UserRepository (findByEmail, existsByEmail).
+  - JWT: jjwt 0.12.6 deps; JwtService (generate/verify tokens); JwtAuthFilter
+    (reads Bearer token on every request, sets SecurityContext).
+  - SecurityConfig: stateless, CSRF off, /auth/** + /actuator/health public,
+    everything else authenticated; BCryptPasswordEncoder bean.
+  - DTOs (records): RegisterRequest, LoginRequest, AuthResponse, RegisterResponse.
+  - AuthService: register (409 if email taken) + login (401 on bad creds,
+    same vague message both ways). Errors via ResponseStatusException
+    (chose this over @RestControllerAdvice to keep it simple — noted as a
+    known trade-off; would use the advice at scale).
+  - AuthController (register/login) + MeController (/api/v1/me proves the token).
+  - Default Spring Security login page is gone — replaced by our JWT rules.
+- Verified: all 6 Postman checks pass (register 201, dup 409, login 200+token,
+  wrong pw 401, /me no-token 401, /me with Bearer token 200). BCrypt hash
+  ($2a$...) visible in DB via psql — real password never stored. CI green.
+- Config: JWT secret from ${JWT_SECRET:default}, expiry 1h. No CI change needed.
+- Note: session-start ritual confirmed — open Docker Desktop, docker compose up -d,
+  then run the app (DB must be up first).
+- Next step: Phase 4 — Documents API. Document entity + repository, multipart
+  upload → 202 + status UPLOADED, list/get/delete scoped to the logged-in user
+  (404 not 403 for others' docs), file type/size validation, Swagger/OpenAPI UI.

@@ -28,9 +28,9 @@ pass. Tick boxes as you go; mirror progress in Memory.md.
   tables visible via `psql`. ✅ DONE
   
 ## Phase 3 — Auth  (Week 1, Day 3)
-- [ ] `User` entity + repository; BCrypt password encoding
-- [ ] POST /auth/register → 201; POST /auth/login → 200 with JWT
-- [ ] JwtService (issue/validate), JwtAuthFilter, SecurityConfig (stateless;
+- [x] `User` entity + repository; BCrypt password encoding
+- [x] POST /auth/register → 201; POST /auth/login → 200 with JWT
+- [x] JwtService (issue/validate), JwtAuthFilter, SecurityConfig (stateless;
       /auth/** and /actuator/health public; everything else authenticated)
 - **Acceptance**: 401 without token; register→login→call a protected endpoint with
   the token succeeds (via Postman).
