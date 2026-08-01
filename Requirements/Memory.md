@@ -117,3 +117,30 @@
 - Next step: Phase 4 — Documents API. Document entity + repository, multipart
   upload → 202 + status UPLOADED, list/get/delete scoped to the logged-in user
   (404 not 403 for others' docs), file type/size validation, Swagger/OpenAPI UI.
+
+### 2026-08-01 — Phase 4 complete (Documents API) — WEEK 1 MILESTONE
+- Done:
+  - File storage config in application.yml (./uploads, 20MB limit).
+  - DocumentStatus enum (UPLOADED/PROCESSING/READY/FAILED), Document entity
+    (@Enumerated STRING, @Setter since status changes over time).
+  - DocumentRepository: findByUserIdOrderByUploadedAtDesc, findByIdAndUserId
+    (the latter is the per-user 404 mechanism).
+  - FileStorageService: saves bytes to disk named by document id (@PostConstruct
+    creates the folder). Original filename kept in DB, not on disk.
+  - DocumentResponse DTO (+ from() factory), DocumentService (validate type/empty,
+    save row then bytes, list/get/delete scoped to user).
+  - CurrentUser helper (reads userId from security context set by JwtAuthFilter).
+  - DocumentController: POST=202, GET list, GET /{id}, DELETE=204. No security
+    code needed — anyRequest().authenticated() already protects it.
+  - Swagger UI added (springdoc 2.6.0) with JWT Authorize button; swagger paths
+    made public in SecurityConfig.
+- Verified in Swagger: register→login→authorize→upload PDF (202, UPLOADED)→list→
+  get→delete (204). File on disk in uploads/, row in DB. Second user gets 404
+  (not 403) for another user's document. CI green.
+- Decisions: files stored on local disk (not S3) — deliberate portfolio trade-off,
+  isolated behind FileStorageService so S3 swap touches one class. Multipart chosen
+  over raw binary (standard for clients, Swagger file picker, room for metadata).
+- Next step: Phase 5 — Ingestion pipeline. This is the AI core: add Spring AI +
+  Tika + pgvector deps, write V2 migration (or let Spring AI create vector_store),
+  @Async worker: extract text → chunk → embed → store, status UPLOADED→PROCESSING→
+  READY/FAILED. Also delete vectors when a document is deleted.

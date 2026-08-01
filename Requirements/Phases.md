@@ -36,11 +36,11 @@ pass. Tick boxes as you go; mirror progress in Memory.md.
   the token succeeds (via Postman).
 
 ## Phase 4 — Documents API + polish  (Week 1, Days 4–5)
-- [ ] Multipart upload → file saved to volume path, `documents` row status=UPLOADED, 202
-- [ ] List / get / delete endpoints, scoped to the authenticated user (404 for
+- [X] Multipart upload → file saved to volume path, `documents` row status=UPLOADED, 202
+- [X] List / get / delete endpoints, scoped to the authenticated user (404 for
       other users' documents)
-- [ ] Validation: file type (PDF/Word), max size
-- [ ] GlobalExceptionHandler → ProblemDetail; Swagger/OpenAPI config with Auth,
+- [X] Validation: file type (PDF/Word), max size
+- [X] GlobalExceptionHandler → ProblemDetail; Swagger/OpenAPI config with Auth,
       Documents tags and JWT authorize button
 - **Acceptance (Week 1 milestone)**: register → login → upload PDF → appears in
   list as UPLOADED → delete works — all via Swagger UI.
