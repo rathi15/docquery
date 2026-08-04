@@ -55,6 +55,7 @@ public class DocumentService {
         Document doc = documentRepository.findByIdAndUserId(id, userId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Document not found"));
         documentRepository.delete(doc);
+        fileStorageService.delete(doc.getId());
         // (Phase 5 note: this is also where we'll delete the document's vectors)
     }
 }

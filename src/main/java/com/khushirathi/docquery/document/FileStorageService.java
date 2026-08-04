@@ -37,4 +37,12 @@ public class FileStorageService {
             throw new UncheckedIOException("Failed to store file", e);
         }
     }
+
+    public void delete(UUID documentId) {
+    try {
+        Files.deleteIfExists(root.resolve(documentId.toString()));
+    } catch (IOException e) {
+        throw new UncheckedIOException("Failed to delete file", e);
+    }
+}
 }

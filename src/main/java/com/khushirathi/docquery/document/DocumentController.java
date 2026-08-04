@@ -4,6 +4,7 @@ import com.khushirathi.docquery.auth.CurrentUser;
 import com.khushirathi.docquery.document.dto.DocumentResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
@@ -16,7 +17,7 @@ public class DocumentController {
 
     private final DocumentService documentService;
 
-    @PostMapping
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseStatus(HttpStatus.ACCEPTED)   // 202
     public DocumentResponse upload(@RequestParam("file") MultipartFile file) {
         return documentService.upload(file, CurrentUser.id());
