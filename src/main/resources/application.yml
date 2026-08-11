@@ -19,6 +19,21 @@ spring:
     multipart:
       max-file-size: 20MB
       max-request-size: 20MB
+  ai:
+    openai:
+      api-key: ${OPENAI_API_KEY}
+      embedding:
+        options:
+          model: text-embedding-3-small
+      chat:
+        options:
+          model: gpt-4o-mini
+      vectorstore:
+        pgvector:
+          initialize-schema: false
+          index-type: HNSW
+          distance-type: COSINE_DISTANCE
+          dimensions: 1536
 
 docquery:
   jwt:

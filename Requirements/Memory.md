@@ -144,3 +144,35 @@
   Tika + pgvector deps, write V2 migration (or let Spring AI create vector_store),
   @Async worker: extract text → chunk → embed → store, status UPLOADED→PROCESSING→
   READY/FAILED. Also delete vectors when a document is deleted.
+
+### 2026-08-11 — Phase 5 IN PROGRESS (Ingestion pipeline) — blocked on OpenAI key
+- Built (code complete, compiles, app starts clean):
+  - Spring AI + Tika + pgvector-store deps (spring-ai 1.0.0 BOM).
+  - application.yml: OpenAI api-key via ${OPENAI_API_KEY}, embedding
+    text-embedding-3-small, chat gpt-4o-mini; vectorstore pgvector
+    initialize-schema:false, HNSW, COSINE, dimensions 1536.
+  - V2__vector_store.sql migration (vector_store table + HNSW index). Applied OK.
+  - AsyncConfig (@EnableAsync, ingestionExecutor pool 2/4/50).
+  - TextExtractor (Tika), TextChunker (TokenTextSplitter ~800 tokens),
+    IngestionService (@Async: PROCESSING → extract → chunk → tag metadata
+    {userId, documentId, chunkIndex} → vectorStore.add → READY / FAILED).
+  - Wired into DocumentService: upload triggers ingest(); delete removes
+    vectors via FilterExpressionBuilder (row + file + vectors all cleaned up).
+- BLOCKER: ingestion reaches OpenAI call then fails — the OPENAI_API_KEY env var
+  was set to placeholder text (first "khushi-key", then "sk-your-real-key-here")
+  instead of a real key. Documents land in FAILED with "invalid_api_key" 401.
+  NOTE: this proves the whole pipeline works end-to-end — upload, security, async,
+  Tika, chunking all run; only the real key is missing. FAILED-path error handling
+  worked perfectly.
+- TODO to finish Phase 5:
+  1. Get a real sk-... key from platform.openai.com (billing enabled).
+  2. $env:OPENAI_API_KEY = "<real key>"  (or setx for permanence); restart app.
+  3. Upload PDF → confirm status reaches READY + chunkCount set.
+  4. psql: SELECT count(*), content, embedding FROM vector_store — see real embeddings.
+  5. Test FAILED path (bad file) + delete removes vectors.
+  6. Check .\mvnw.cmd test — contextLoads may now need the key; if CI goes red,
+     add a test-profile fix so the runner doesn't need a real key.
+  7. THEN commit + push + update guide.
+- Side notes resolved this session: earlier 403/Swagger/"site not reached" issues
+  were the app being stopped / Swagger quirks — app itself is fine. Confirmed
+  SecurityConfig loads correctly once app is actually running.

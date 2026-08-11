@@ -44,5 +44,8 @@ public class FileStorageService {
     } catch (IOException e) {
         throw new UncheckedIOException("Failed to delete file", e);
     }
-}
+    }
+    public Path pathFor(UUID documentId) {
+        return root.resolve(documentId.toString());
+    }
 }

@@ -46,13 +46,13 @@ pass. Tick boxes as you go; mirror progress in Memory.md.
   list as UPLOADED → delete works — all via Swagger UI.
 
 ## Phase 5 — Ingestion pipeline  (Week 2, Days 1–3)
-- [ ] Add Spring AI BOM + OpenAI starter + Tika reader + pgvector store deps
-- [ ] AsyncConfig (bounded pool) + @Async IngestionService
-- [ ] Tika extraction → TokenTextSplitter (~500–800 tokens, 10–15% overlap) →
+- [X] Add Spring AI BOM + OpenAI starter + Tika reader + pgvector store deps
+- [X] AsyncConfig (bounded pool) + @Async IngestionService
+- [X] Tika extraction → TokenTextSplitter (~500–800 tokens, 10–15% overlap) →
       batched embeddings → PgVectorStore.add with metadata {userId, documentId,
       chunkIndex, page}
-- [ ] Status transitions PROCESSING→READY, failures→FAILED with error_message
-- [ ] Document delete also deletes vectors (same service method)
+- [X] Status transitions PROCESSING→READY, failures→FAILED with error_message
+- [X] Document delete also deletes vectors (same service method)
 - **Acceptance**: upload a real PDF → status reaches READY → chunk_count set →
   rows visible in vector_store; a corrupt file lands in FAILED, app stays healthy.
 
