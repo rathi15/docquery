@@ -19,21 +19,22 @@ spring:
     multipart:
       max-file-size: 20MB
       max-request-size: 20MB
+
   ai:
-    openai:
-      api-key: ${OPENAI_API_KEY}
+    ollama:
+      base-url: http://localhost:11434
       embedding:
         options:
-          model: text-embedding-3-small
+          model: nomic-embed-text
       chat:
         options:
-          model: gpt-4o-mini
-      vectorstore:
-        pgvector:
-          initialize-schema: false
-          index-type: HNSW
-          distance-type: COSINE_DISTANCE
-          dimensions: 1536
+          model: llama3.2
+    vectorstore:
+      pgvector:
+        initialize-schema: false
+        index-type: HNSW
+        distance-type: COSINE_DISTANCE
+        dimensions: 768
 
 docquery:
   jwt:
