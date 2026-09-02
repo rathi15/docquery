@@ -57,10 +57,10 @@ pass. Tick boxes as you go; mirror progress in Memory.md.
   rows visible in vector_store; a corrupt file lands in FAILED, app stays healthy.
 
 ## Phase 6 — RAG query  (Week 2, Days 4–5)
-- [ ] POST /query: embed question → similaritySearch(topK, filter userId
+- [X] POST /query: embed question → similaritySearch(topK, filter userId
       [+documentIds]) → prompt template with labeled chunks → chat model call
-- [ ] Response: answer + citations assembled from the retrieved chunks
-- [ ] Guardrails: empty retrieval → honest "not found in your documents" answer
+- [X] Response: answer + citations assembled from the retrieved chunks
+- [X] Guardrails: empty retrieval → honest "not found in your documents" answer
 - **Acceptance (Week 2 milestone)**: ask a question about an uploaded document via
   Swagger and get a correct, cited answer; a second user cannot query it.
 

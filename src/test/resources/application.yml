@@ -1,0 +1,23 @@
+spring:
+  ai:
+    ollama:
+      base-url: http://localhost:11434
+      embedding:
+        options:
+          model: nomic-embed-text
+      chat:
+        options:
+          model: llama3.2
+    vectorstore:
+      pgvector:
+        initialize-schema: false
+        index-type: HNSW
+        distance-type: COSINE_DISTANCE
+        dimensions: 768
+
+docquery:
+  jwt:
+    secret: test-only-secret-long-enough-for-hs256-signing-algorithm-1234567890
+    expiration-ms: 3600000
+  storage:
+    location: ./test-uploads
