@@ -65,10 +65,10 @@ pass. Tick boxes as you go; mirror progress in Memory.md.
   Swagger and get a correct, cited answer; a second user cannot query it.
 
 ## Phase 7 — Tests + hardening  (Week 3, Days 1–2)
-- [ ] Unit tests: chunk metadata assembly, citation mapping, status transitions,
+- [X] Unit tests: chunk metadata assembly, citation mapping, status transitions,
       auth service — embedding/chat clients mocked
-- [ ] Testcontainers integration test: Flyway + repositories against real pgvector
-- [ ] Validation + logging pass over all endpoints
+- [X] Testcontainers integration test: Flyway + repositories against real pgvector
+- [X] Validation + logging pass over all endpoints
 - **Acceptance**: `./mvnw verify` green locally and in CI, including Testcontainers.
 
 ## Phase 8 — Deployment  (Week 3, Days 3–5)

@@ -176,3 +176,18 @@
 - Side notes resolved this session: earlier 403/Swagger/"site not reached" issues
   were the app being stopped / Swagger quirks — app itself is fine. Confirmed
   SecurityConfig loads correctly once app is actually running.
+
+### Phase 7 complete (Tests + hardening)
+- Unit tests (Mockito, no Spring context): QueryServiceTest (guardrails +
+  citations-from-retrieval), DocumentServiceTest (validation, per-user 404,
+  full delete cleanup).
+- Integration tests (Testcontainers real PostgreSQL + pgvector, AI mocked via
+  TestAiConfig): AuthIntegrationTest — register/login/token flow, duplicate 409.
+- Key learnings: TestRestTemplate reports 403 (not 401) for no-token protected
+  endpoints — that's correct Spring default, so the test expectation was wrong,
+  not the app. SecurityConfig loaded fine all along; "generated password" log is
+  an unrelated harmless auto-config. Test config: separate test application.yml
+  (no datasource — Testcontainers supplies it dynamically), @Import(TestAiConfig)
+  for mock EmbeddingModel + ChatClient.Builder so tests need no Ollama.
+- Next: Phase 8 — Deployment (Dockerfile + AWS). Note: local Ollama needs enough
+  RAM; free-tier EC2 (1GB) can't run llama3.2 — decision needed.
